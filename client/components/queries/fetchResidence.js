@@ -1,3 +1,5 @@
+//Query Untuk fetching tunggal data residence
+
 import gql from 'graphql-tag';
 
 export default gql`

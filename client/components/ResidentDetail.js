@@ -6,13 +6,27 @@ import { updateResidence } from './queries/updateResidence';
 import { Link, hashHistory } from 'react-router';
 import query from './queries/fetchResidences';
 
-class ResidentDetail extends Component {
+class ResidentDetail extends React.Component {
+	constructor(props){
+		super(props);	
+
+		this.state = { 
+			full_name: '',
+			age: '', 
+		 	address: '', 
+			email: '', 
+			phone: '', 
+			house_status: '', 
+			lived_since: '', 
+			family_member: '' };
+	}		
 
 	onSubmit(event) {
 		event.preventDefault();
 
 		this.props.mutate({
 			variables: {
+				id: this.props.params.id,
 				full_name: this.state.full_name,
 				age: this.state.age,
 				address: this.state.address,
@@ -25,11 +39,32 @@ class ResidentDetail extends Component {
 		}).then(() => hashHistory.push('/residencelist'));
 	}
 
-	render(){
-		const { residence } = this.props.data;
-		
-		const optionState = this.props.data.house_status;			
+	
 
+	componentDidUpdate(props, state, snapshot) {
+    if (this.props.data.residence !== props.data.residence) {
+      this.setState(this.props.data.residence);
+    }
+  }
+
+	/*static getDerivedStateFromProps(nextProps, prevState) {
+       const { id, full_name, age } = nextProps.data.residence;
+       if (JSON.stringify(nextProps.data.residence.id) !== JSON.stringify(prevState.data.residence.id)) {
+          return {
+              id,
+              full_name,
+              age
+          };
+       }
+
+    return null;
+
+ }*/
+	
+
+	render(){
+		const { id, full_name, age } = this.state;
+		const { residence } = this.props.data;
 		if (!residence) { return <div>Loading....</div>; }
 
 		return(
@@ -39,37 +74,37 @@ class ResidentDetail extends Component {
   				<label>Full Name</label>
   				<input 
   					onChange={event => this.setState({ full_name: event.target.value })}
-  					value={residence.full_name}
+  					value={this.state.full_name}
   				/>
   				<label>Age</label>
   				<input
   					onChange={event => this.setState({ age: event.target.value })}
-  					value={residence.age}
+  					value={this.state.age}
   					type="Number"
   				/>
   				<label>Address</label>
   				<input 
   					onChange={event => this.setState({ address: event.target.value })}
-  					value={residence.address}
+  					value={this.state.address}
   				/>
   				<label>Email</label>
   				<input 
   					onChange={event => this.setState({ email: event.target.value })}
-  					value={residence.email}
+  					value={this.state.email}
   					type="email"
   				/>
   				<label>Phone</label>
   				<input 
   					onChange={event => this.setState({ phone: event.target.value })}
-  					value={residence.phone}
+  					value={this.state.phone}
   					type="Number"
   				/>
 
   				<label>House Status</label>
 				<select defaultValue={residence.house_status} onChange={event => this.setState({ house_status: event.target.value })} className="ui fluid dropdown">
 					<option value="" disabled>Select</option>
-		            <option value="Pribadi">Pribadi</option>
-		            <option value="Sewa Keluarga">Sewa Keluarga</option>
+		            <option value="Pribadi" >Pribadi</option>
+		            <option value="Sewa Keluarga" >Sewa Keluarga</option>
 		            <option value="Kos">Kos</option>
 		            <option value="Sewa Kos">Sewa Kos</option>
 		        </select>			    
@@ -77,17 +112,16 @@ class ResidentDetail extends Component {
   				<label>Lived Since</label>
   				<input 
   					onChange={event => this.setState({ lived_since: event.target.value })}
-  					value={residence.lived_since}
+  					value={this.state.lived_since}
   					type="Number" 					
   				/>
   				<label>Family Member</label>
   				<input 
   					onChange={event => this.setState({ family_member: event.target.value })}
-  					value={residence.family_member}
+  					value={this.state.family_member}
   					type="Number"
   				/>
-
-  					<button className="ui button" type="submit">Submit Order</button>
+  					<button className="ui button mt-1" type="submit">Submit Order</button>
 
   				</form>
 			</div>
@@ -95,6 +129,9 @@ class ResidentDetail extends Component {
 	}
 }
 
-export default graphql(fetchResidence, {
+
+export default graphql(updateResidence)(
+	graphql(fetchResidence, {
 	options: (props) => { return { variables: { id: props.params.id } } }
-})(ResidentDetail);
+})(ResidentDetail)
+);

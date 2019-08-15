@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo';
 import { Link } from 'react-router';
 import query from '../queries/CurrentUser';
 import mutation from '../mutations/Logout';
+import { Input, Menu } from 'semantic-ui-react';
 
 
 class Header extends Component {
@@ -19,7 +20,10 @@ class Header extends Component {
 
 		if (user) {
 			return (
+					<div>
+					<li><Link to="/dashboard">Residence Table</Link></li>
 					<li><a onClick={this.onLogoutClick.bind(this)}>Logout</a></li>
+					</div>
 				);
 		} else {
 			return (
@@ -38,6 +42,9 @@ class Header extends Component {
 		}
 
 	}
+
+	
+
 	render() {
 		return(
 			<nav>

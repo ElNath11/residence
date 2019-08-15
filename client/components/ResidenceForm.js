@@ -88,13 +88,10 @@ class ResidenceForm extends React.Component {
   					value={this.state.family_member}
   					type="Number"
   				/>
-  				<button className="ui button" type="submit">Submit Order</button>
+  				<button className="ui button mt-1" type="submit">Submit Order</button>
   				</form>
 			</div>
 			);
 		}
 	}
-
-	
-
-	export default graphql(addResidence)(ResidenceForm);
+export default graphql(addResidence)(ResidenceForm);

@@ -6,7 +6,7 @@ class AuthForm extends Component {
 
 		this.state = { email: '', password: '' };
 	}
-
+	//submit data login
 	onSubmit() {
 		event.preventDefault();
 

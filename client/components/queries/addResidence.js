@@ -1,3 +1,5 @@
+//Query Untuk menambahkan Residence, dibuat berdasar schema graphql
+
 import gql from 'graphql-tag'
 
 export const addResidence =  gql`
