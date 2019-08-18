@@ -4,7 +4,6 @@ import { graphql, compose } from 'react-apollo';
 import { Link } from 'react-router';
 import fetchResidences from './queries/fetchResidences';
 import residencesFilter from './queries/residencesFilter';
-import SearchBar from './SearchBar';
 
 import { Table } from 'semantic-ui-react'
 
