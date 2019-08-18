@@ -15,12 +15,7 @@ class ResidenceList extends Component {
 		return this.props.data.residences.map(residence => {
 			return(
 				<li key={residence.id} className="collection-item">
-					<Link to={`/residence/${residence.id}`}>{residence.full_name}</Link>
-					<i 
-					className="material-icons"
-					onClick={() => this.onResidencDelete(residence.id)}
-					>delete
-					</i>
+				{residence.full_name}
 				</li>
 			);
 		});

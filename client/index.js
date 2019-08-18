@@ -13,6 +13,7 @@ import requireAuth from './components/requireAuth';
 import ResidenceForm from './components/ResidenceForm';
 import ResidenceList from './components/ResidenceList';
 import ResidentDetail from './components/ResidentDetail';
+import SearchBar from './components/SearchBar';
 
 const networkInterface = createNetworkInterface({
 	uri: '/graphql',
@@ -38,6 +39,7 @@ const Root = () => {
 	    		<Route path="residenceform" component={ResidenceForm} />
 	    		<Route path="residencelist" component={ResidenceList} />
 	    		<Route path="residence/:id" component={ResidentDetail} />
+	    		<Route path="search" component={SearchBar} />
 	    	</Route>
 	    </Router>
     </ApolloProvider>

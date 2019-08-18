@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLID,GraphQLList, GraphQLNonNull } = graphql;
+const { GraphQLObjectType, GraphQLID,GraphQLList, GraphQLNonNull,GraphQLString } = graphql;
 const UserType = require('./user_type');
 const ResidenceType = require('./residence_type');
 const mongoose = require('mongoose');
@@ -20,6 +20,13 @@ const RootQueryType = new GraphQLObjectType({
   			return Residence.find({});	
   		}
   	},
+    residencesFilter: {
+      type: new GraphQLList(ResidenceType),
+      args: { house_status: { type: new GraphQLNonNull(GraphQLString) } },
+      resolve(parentValue, { house_status }){
+        return Residence.find({house_status});  
+      }
+    },
     residence: {
       type: ResidenceType,
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },

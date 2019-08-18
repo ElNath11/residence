@@ -1,20 +1,61 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import { Link } from 'react-router';
 import fetchResidences from './queries/fetchResidences';
+import residencesFilter from './queries/residencesFilter';
+import SearchBar from './SearchBar';
 
 import { Table } from 'semantic-ui-react'
 
+
+function searchingFor(term){
+	return function(x){
+		return x.house_status.toLowerCase().includes(term.toLowerCase()) || x.full_name.toLowerCase().includes(term.toLowerCase())
+		|| !term;
+	}
+}
+
 class Dashboard extends Component {
+	constructor(props){
+		super(props);
+
+			this.state = { 
+			residence: this.props.data.residences,
+			term: ''
+		}
+
+		this.searchHandler = this.searchHandler.bind(this);	
+	}
+
+	searchHandler(event){
+		this.setState({ term: event.target.value })
+	}
+
+	componentDidUpdate(props, state, snapshot) {
+    if (this.props.data.residence !== props.data.residence) {
+      this.setState(this.props.data.residence);
+    }
+  }
+
 	onResidencDelete(id){
 		this.props.mutate({ variables: { id } })
 		 .then(() => this.props.data.refetch());
 	}
 
-	//fetching data jamak residence
+	onResidenceFilter(house_status){
+		this.setState({ house_status: event.target.value });
+		this.props.mutate({ variables: { house_status } })
+		 .then(() => this.props.data.refetch());
+	}
+
+
+
+	/*fetching data jamak residence*/
+
 	renderResidences() {
-		return this.props.data.residences.map(residence => {
+
+		return this.props.data.residences.filter(searchingFor(this.state.term)).map(residence => {
 			return(
 					<tr key={residence.id} className="">
 				        <td className="">{residence.full_name}</td>
@@ -36,7 +77,18 @@ class Dashboard extends Component {
 
 	render(){
 		if (this.props.data.loading) { return <div>Loading....</div>; }
+		const { term } = this.state;
 		return(
+			<div>
+
+			<form>
+      			<input type="text" 
+      			onChange={this.searchHandler}
+      			value={term}
+      			placeholder="Search"
+      			/>
+      		</form>
+
 				<div className="tabelList">
 				  <table className="ui grey inverted table">
 				    <thead className="">
@@ -59,7 +111,8 @@ class Dashboard extends Component {
 				  	<Link to="residenceform" className="btn-floating btn-large blue right">
 						<i className="material-icons">add</i>
 					</Link>
-				</div>		
+				</div>
+			</div>	
 		);
 	}
 }

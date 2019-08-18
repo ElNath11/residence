@@ -73,6 +73,7 @@ class ResidenceForm extends React.Component {
 		            <option value="Sewa Keluarga">Sewa Keluarga</option>
 		            <option value="Kos">Kos</option>
 		            <option value="Sewa Kos">Sewa Kos</option>
+                <option value="Kantor">Kantor</option>
 		        </select>
 			    
 
