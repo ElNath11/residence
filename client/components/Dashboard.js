@@ -6,10 +6,6 @@ import fetchResidences from './queries/fetchResidences';
 import residencesFilter from './queries/residencesFilter';
 import { Table } from 'semantic-ui-react'
 
-import ModalContent from './modal/ModalContent';
-import ModalComponent from './modal/ModalComponent';
-// import Modal from 'react-bootstrap/Modal'
-
 
 function searchingFor(term){
 	return function(x){
@@ -34,7 +30,7 @@ class Dashboard extends React.Component {
 	}
 
 
-	toggleModal() {
+	toggleModal(id) {
     	this.setState({ showModal: !this.state.showModal });
   }
 	
@@ -49,9 +45,11 @@ class Dashboard extends React.Component {
   }
 
 	onResidencDelete(id){
+		
+
 		this.props.mutate({ variables: { id } })
 		 .then(() => this.props.data.refetch());
-		 .then(() => this.setState({ showModal: !this.state.showModal }));
+		this.setState({ showModal: !this.state.showModal });
 	}
 
 	onResidenceFilter(house_status){
@@ -60,8 +58,8 @@ class Dashboard extends React.Component {
 		 .then(() => this.props.data.refetch());
 	}
 
-	renderActions(){
-  	const {id} = this.props.params;
+	renderActions(id){
+  	
 	  return (
 	    <React.Fragment>
 	      <button 
@@ -90,7 +88,17 @@ class Dashboard extends React.Component {
 				        	<Link to={`/residence/${residence.id}`}><i className="material-icons">edit</i></Link>
 				        	<i className="material-icons" onClick={() => this.onResidencDelete(residence.id)}>delete</i>
 				        	
-				        	<i onClick={() => this.toggleModal()} className="trigger-btn" > Click me! </i>
+				        	<i className="material-icons" onClick={() => this.toggleModal(residence.id)}>info</i>
+				        	 { /* Show modal with custom title + message */ }
+
+				        { this.state.showModal && (
+				          <Modal
+				            toggleModal={() => this.toggleModal()}
+				            title="This is a pop-up modal!"
+				            message="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum illum ducimus tempora voluptas excepturi asperiores, maxime facere sint. In obcaecati eum ex delectus totam fuga corporis vero cupiditate distinctio vitae."
+				            actions={this.renderActions(residence.id)}
+				          />
+				        )} 
 				        </td>
 				      </tr>
 			);
@@ -100,24 +108,13 @@ class Dashboard extends React.Component {
 
 
 	render(){
-		console.log(this.state.showModal);
 		if (this.props.data.loading) { return <div>Loading....</div>; }
 		const { term } = this.state;
-		
 		return(
 		
 			<div>
 
-	  { /* Show modal with custom title + message */ }
-
-        { this.state.showModal && (
-          <Modal
-            toggleModal={() => this.toggleModal()}
-            title="This is a pop-up modal!"
-            message="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum illum ducimus tempora voluptas excepturi asperiores, maxime facere sint. In obcaecati eum ex delectus totam fuga corporis vero cupiditate distinctio vitae."
-            actions={this.renderActions()}
-          />
-        )} 
+	 
 
 			<form>
       			<input type="text" 

@@ -85,10 +85,11 @@ input, select { margin-bottom: 14px !important; }
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0,0,0,0.75);
+  background-color: rgba(0,0,0,0.25);
 }
 
 .modal-box {
+  color: 333333;
   height: 200px;
   width: 600px;
   border-radius: 5px;
