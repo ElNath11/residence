@@ -85,10 +85,8 @@ class Dashboard extends React.Component {
 				        <td className="">{residence.lived_since}</td>
 				        <td className="">{residence.family_member}</td>
 				        <td className="">
-				        	<Link to={`/residence/${residence.id}`}><i className="material-icons">edit</i></Link>
-				        	<i className="material-icons" onClick={() => this.onResidencDelete(residence.id)}>delete</i>
-				        	
-				        	<i className="material-icons" onClick={() => this.toggleModal(residence.id)}>info</i>
+				        	<Link to={`/residence/${residence.id}`}><i className="material-icons">edit</i></Link>				        
+				        	<i className="material-icons" onClick={() => this.toggleModal(residence.id)}>delete</i>
 				        	 { /* Show modal with custom title + message */ }
 
 				        { this.state.showModal && (
