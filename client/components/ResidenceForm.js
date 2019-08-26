@@ -6,16 +6,29 @@ import { addResidence } from './queries/addResidence';
 import { Link, hashHistory } from 'react-router';
 import query from './queries/fetchResidences';
 
+const Spinner = () => (
+  <img src="https://loading.io/spinners/microsoft/index.svg" className="zoom2" height="20"/>
+);
+
 class ResidenceForm extends React.Component {
 	constructor(props){
 		super(props);
-
-		this.state = { full_name: '', age: '', address: '', email: '', phone: '', house_status: '', lived_since: '', family_member: '' };
+		this.state = { 
+                  full_name: '', 
+                  age: '', 
+                  address: '', 
+                  email: '', 
+                  phone: '', 
+                  house_status: '', 
+                  lived_since: '', 
+                  family_member: '',
+                  isLoading: false
+                };
 	}
 
 	onSubmit(event) {
 		event.preventDefault();
-
+    this.setState({ isLoading: true });
 		this.props.mutate({
 			variables: {
 				full_name: this.state.full_name,
@@ -30,43 +43,46 @@ class ResidenceForm extends React.Component {
 		}).then(() => hashHistory.push('/residencelist'));
 	}
 
-	render() {
-		
+	render() {		
 		return(
 			<div>
-				<Link to="/">Back</Link>
+				<Link to="/" className="ui secondary button mt-1">Back</Link>
 				<h3>Create a New Residence</h3>
 				<form onSubmit={this.onSubmit.bind(this)} className="ui form">
-  				<label>Full Name</label>
+  				<label>Full Name <i className="required-text">* required</i></label>
   				<input 
   					onChange={event => this.setState({ full_name: event.target.value })}
   					value={this.state.full_name}
+            required
   				/>
-  				<label>Age</label>
+  				<label>Age <i className="required-text">* required</i></label>
   				<input
   					onChange={event => this.setState({ age: event.target.value })}
   					value={this.state.age}
   					type="Number"
+            required
   				/>
-  				<label>Address</label>
+  				<label>Address <i className="required-text">* required</i></label>
   				<input 
   					onChange={event => this.setState({ address: event.target.value })}
   					value={this.state.address}
+            required
   				/>
-  				<label>Email</label>
+  				<label>Email <i className="required-text">* required</i></label>
   				<input 
   					onChange={event => this.setState({ email: event.target.value })}
   					value={this.state.email}
   					type="email"
+            required
   				/>
-  				<label>Phone</label>
+  				<label>Phone <i className="required-text">* required</i></label>
   				<input 
   					onChange={event => this.setState({ phone: event.target.value })}
   					value={this.state.phone}
   					type="Number"
+            required
   				/>
-
-  				<label>House Status</label>
+  				<label>House Status <i className="required-text">* required</i></label>
 				<select value={this.state.house_status} onChange={event => this.setState({ house_status: event.target.value })} className="ui fluid dropdown">
 					<option value="" disabled>Select</option>
 		            <option value="Pribadi">Pribadi</option>
@@ -75,21 +91,24 @@ class ResidenceForm extends React.Component {
 		            <option value="Sewa Kos">Sewa Kos</option>
                 <option value="Kantor">Kantor</option>
 		        </select>
-			    
-
-  				<label>Lived Since</label>
+  				<label>Lived Since <i className="required-text">* required</i></label>
   				<input 
   					onChange={event => this.setState({ lived_since: event.target.value })}
   					value={this.state.lived_since}
-  					type="Number" 					
+  					type="Number"
+            required
   				/>
-  				<label>Family Member</label>
+  				<label>Family Member <i className="required-text">* required</i></label>
   				<input 
   					onChange={event => this.setState({ family_member: event.target.value })}
   					value={this.state.family_member}
   					type="Number"
+            required
   				/>
-  				<button className="ui button mt-1" type="submit">Submit Order</button>
+  				<button className={"ui button blue mt-1 " + (this.state.isLoading ? 'loading disabled' : '') } type="submit">
+            Submit
+          </button>
+          
   				</form>
 			</div>
 			);

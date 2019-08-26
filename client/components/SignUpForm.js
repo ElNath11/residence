@@ -5,6 +5,7 @@ import SignUp from '../mutations/SignUp';
 import query from '../queries/CurrentUser';
 import { hashHistory } from 'react-router';
 
+
 class SignUpForm extends Component {
 	constructor(props){
 		super(props);
@@ -12,7 +13,7 @@ class SignUpForm extends Component {
 		this.state = { errors: [] };
 	}
 
-	componentWillUpdate(nextProps){
+	UNSAFE_componentWillUpdate(nextProps){
 		if (nextProps.data.user && !this.props.data.user) {
 			hashHistory.push('/dashboard');
 		}
@@ -23,15 +24,17 @@ class SignUpForm extends Component {
 			variables: { email, password },
 			refetchQueries: [{ query }]
 		}).catch(res => {
-			const errors =  res.graphQLErrors.map(error => error.message);
+			const errors = res.graphQLErrors.map(error => error.message);
 			this.setState({ errors });
 		});
 	}
 
 	render(){
+		
 		return(
 			<div>
 				<h3>Sign Up</h3>
+				
 				<AuthForm 
 					errors={this.state.errors}
 					onSubmit={this.onSubmit.bind(this)} 

@@ -18,12 +18,13 @@ class ResidentDetail extends React.Component {
 			phone: '', 
 			house_status: '', 
 			lived_since: '', 
-			family_member: '' };
+			family_member: '',
+      isLoading: false };
 	}		
 
 	onSubmit(event) {
 		event.preventDefault();
-
+    this.setState({ isLoading: true });
 		this.props.mutate({
 			variables: {
 				id: this.props.params.id,
@@ -69,6 +70,7 @@ class ResidentDetail extends React.Component {
 
 		return(
 			<div>
+      <Link to="/dashboard" className="ui secondary button mt-1">Back</Link>
 				<h3>Detail Resident</h3>
 				<form onSubmit={this.onSubmit.bind(this)} className="ui form">
   				<label>Full Name</label>
@@ -121,8 +123,7 @@ class ResidentDetail extends React.Component {
   					value={this.state.family_member}
   					type="Number"
   				/>
-  					<button className="ui button mt-1" type="submit">Submit Order</button>
-
+  					<button className={"ui button blue mt-1 " + (this.state.isLoading ? 'loading disabled' : '')} type="submit">Update</button>
   				</form>
 			</div>
 		);

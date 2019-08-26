@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from './Header';
+import PropTypes from 'prop-types';
 
 const App = (props) => {
 	return(

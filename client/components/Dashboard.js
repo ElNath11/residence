@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import { Link } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import fetchResidences from './queries/fetchResidences';
 import residencesFilter from './queries/residencesFilter';
-
 import { Table } from 'semantic-ui-react'
+
+import ModalContent from './modal/ModalContent';
+import ModalComponent from './modal/ModalComponent';
+// import Modal from 'react-bootstrap/Modal'
 
 
 function searchingFor(term){
@@ -15,18 +18,26 @@ function searchingFor(term){
 	}
 }
 
-class Dashboard extends Component {
+class Dashboard extends React.Component {
+
 	constructor(props){
 		super(props);
 
 			this.state = { 
 			residence: this.props.data.residences,
-			term: ''
+			term: '',
+			showModal: false
 		}
 
-		this.searchHandler = this.searchHandler.bind(this);	
+		this.searchHandler = this.searchHandler.bind(this);			
+
 	}
 
+
+	toggleModal() {
+    	this.setState({ showModal: !this.state.showModal });
+  }
+	
 	searchHandler(event){
 		this.setState({ term: event.target.value })
 	}
@@ -40,6 +51,7 @@ class Dashboard extends Component {
 	onResidencDelete(id){
 		this.props.mutate({ variables: { id } })
 		 .then(() => this.props.data.refetch());
+		 .then(() => this.setState({ showModal: !this.state.showModal }));
 	}
 
 	onResidenceFilter(house_status){
@@ -48,7 +60,16 @@ class Dashboard extends Component {
 		 .then(() => this.props.data.refetch());
 	}
 
-
+	renderActions(){
+  	const {id} = this.props.params;
+	  return (
+	    <React.Fragment>
+	      <button 
+	      onClick={() => this.onResidencDelete(id)} 
+	      className="ui button negative">Delete</button>
+	    </React.Fragment>
+	  );
+}
 
 	/*fetching data jamak residence*/
 
@@ -68,17 +89,35 @@ class Dashboard extends Component {
 				        <td className="">
 				        	<Link to={`/residence/${residence.id}`}><i className="material-icons">edit</i></Link>
 				        	<i className="material-icons" onClick={() => this.onResidencDelete(residence.id)}>delete</i>
+				        	
+				        	<i onClick={() => this.toggleModal()} className="trigger-btn" > Click me! </i>
 				        </td>
 				      </tr>
 			);
 		});
 	}
 
+
+
 	render(){
+		console.log(this.state.showModal);
 		if (this.props.data.loading) { return <div>Loading....</div>; }
 		const { term } = this.state;
+		
 		return(
+		
 			<div>
+
+	  { /* Show modal with custom title + message */ }
+
+        { this.state.showModal && (
+          <Modal
+            toggleModal={() => this.toggleModal()}
+            title="This is a pop-up modal!"
+            message="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum illum ducimus tempora voluptas excepturi asperiores, maxime facere sint. In obcaecati eum ex delectus totam fuga corporis vero cupiditate distinctio vitae."
+            actions={this.renderActions()}
+          />
+        )} 
 
 			<form>
       			<input type="text" 
@@ -111,10 +150,36 @@ class Dashboard extends Component {
 						<i className="material-icons">add</i>
 					</Link>
 				</div>
-			</div>	
+			</div>
+		
 		);
 	}
 }
+
+
+const Modal = ({ title, toggleModal, message, actions }) => (
+  <div className="modal-background">
+    { /* Modal box */ }
+    <div className="modal-box">
+      { /* Heading */ }
+      <div className="heading-modal">
+        <h1 className="title-modal">{title}</h1>
+        <i
+          onClick={() => toggleModal()}
+          className="fas fa-times closeBtn-modal">
+        </i>
+      </div>
+      
+      { /* Content */ }
+      <div className="content-modal">
+        {message}
+      </div>
+      <div className="actions">
+      	{actions}
+      </div>
+    </div>
+  </div>
+)
 
 const deleteResidence = gql`
 	mutation DeleteResidence($id: ID){

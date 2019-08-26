@@ -21,8 +21,8 @@ class Header extends Component {
 		if (user) {
 			return (
 					<div>
-					<li><Link to="/dashboard">Residence Table</Link></li>
-					<li><a onClick={this.onLogoutClick.bind(this)}>Logout</a></li>
+						<li><Link to="/dashboard">Residence Table</Link></li>
+						<li><a onClick={this.onLogoutClick.bind(this)}>Logout</a></li>
 					</div>
 				);
 		} else {
@@ -49,7 +49,7 @@ class Header extends Component {
 		return(
 			<nav>
 				<div className="nav-wrapper">
-				<Link to="/" className="brand-logo left">
+				<Link to="/" className="brand-logo left px-15">
 					Home
 				</Link>
 					<ul className="right">

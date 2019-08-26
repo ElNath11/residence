@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
+import Spinner from './Spinner';
 
 class AuthForm extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { email: '', password: '' };
+		this.state = { email: '', password: '', isLoading: false };
 	}
 	//submit data login
 	onSubmit() {
 		event.preventDefault();
-
+		this.setState({ isLoading: true });
 		this.props.onSubmit(this.state);
 	}
 
 	render() {
+		
 		return(
 		<div className="row">
 			<form onSubmit={this.onSubmit.bind(this)} className="col s6">
@@ -35,7 +37,7 @@ class AuthForm extends Component {
 			<div className="errors">
 				{ this.props.errors.map(error => <div key={error}>{error}</div>) }
 			</div>
-			<button className="btn">Submit</button>
+			<button className="btn "> Submit</button>
 			</form>
 		</div>
 		);

@@ -12,7 +12,7 @@ class LoginForm extends Component {
 		this.state = { errors: [] };
 	}
 
-	componentWillUpdate(nextProps)	{
+	UNSAFE_componentWillUpdate(nextProps)	{
 		// this.props // old current props
 		// nextProps // the next set of props
 		// when component rerenders
